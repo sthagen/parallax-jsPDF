@@ -229,6 +229,8 @@ declare module "jspdf" {
     jsPDF?: jsPDF;
     x?: number;
     y?: number;
+    width?: number;
+    windowWidth?: number;
     fontFaces?: HTMLFontFace[];
   }
 
@@ -568,6 +570,17 @@ declare module "jspdf" {
     y: number;
   }
 
+  export interface TableRowData {
+    row?: number;
+    data?: any[];
+  }
+
+  export interface TableCellData {
+    row?: number;
+    col?: number;
+    data?: any;
+  }
+
   export interface TableConfig {
     printHeaders?: boolean;
     autoSize?: boolean;
@@ -575,6 +588,9 @@ declare module "jspdf" {
     fontSize?: number;
     padding?: number;
     headerBackgroundColor?: string;
+    headerTextColor?: string;
+    rowStart?: (e: TableRowData, doc: jsPDF) => void;
+    cellStart?: (e: TableCellData, doc: jsPDF) => void;
     css?: {
       "font-size": number;
     };
