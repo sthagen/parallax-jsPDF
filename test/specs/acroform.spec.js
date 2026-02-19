@@ -1162,5 +1162,32 @@ describe("Module: Acroform Integration Test", function() {
       expect(output).not.toContain("/AA <<");
       expect(output).toContain("#2FAA");
     });
+    it("escapes malicious input in CheckBox AS", function() {
+      var doc = new jsPDF();
+      var field = new doc.AcroFormCheckBox();
+      field.x = 10; field.y = 10; field.width = 20; field.height = 10;
+      doc.addField(field);
+
+      field.AS = "/Off /AA << /E << /S /JavaScript /JS (app.alert(1)) >> >>";
+
+      var output = doc.output();
+      expect(output).not.toContain("/AA << /E << /S /JavaScript");
+      expect(field.AS).toContain("#2FAA");
+    });
+
+    it("escapes malicious input in RadioButton child appearanceState", function() {
+      var doc = new jsPDF();
+      var group = new doc.AcroFormRadioButton();
+      group.x = 10; group.y = 10; group.width = 20; group.height = 10;
+      doc.addField(group);
+
+      var child = group.createOption("opt1");
+      child.x = 10; child.y = 10; child.width = 20; child.height = 10;
+      child.appearanceState = "Off /AA << /E << /S /JavaScript /JS (app.alert(1)) >> >>";
+
+      var output = doc.output();
+      expect(output).not.toContain("/AA << /E << /S /JavaScript");
+      expect(child.AS).toContain("#2FAA");
+    });
   });
 });

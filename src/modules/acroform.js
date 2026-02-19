@@ -2143,7 +2143,11 @@ var AcroFormButton = function() {
       return _AS;
     },
     set: function(value) {
-      _AS = value;
+      var name = value === undefined || value === null ? "" : value.toString();
+      if (name.substr(0, 1) === "/") {
+        name = name.substr(1);
+      }
+      _AS = "/" + pdfEscapeName(name);
     }
   });
 
@@ -2296,7 +2300,11 @@ var AcroFormChildClass = function() {
       return _AS;
     },
     set: function(value) {
-      _AS = value;
+      var name = value === undefined || value === null ? "" : value.toString();
+      if (name.substr(0, 1) === "/") {
+        name = name.substr(1);
+      }
+      _AS = "/" + pdfEscapeName(name);
     }
   });
 
@@ -2313,7 +2321,11 @@ var AcroFormChildClass = function() {
       return _AS.substr(1, _AS.length - 1);
     },
     set: function(value) {
-      _AS = "/" + value;
+      var name = value === undefined || value === null ? "" : value.toString();
+      if (name.substr(0, 1) === "/") {
+        name = name.substr(1);
+      }
+      _AS = "/" + pdfEscapeName(name);
     }
   });
   this.caption = "l";
